@@ -1,0 +1,6 @@
+# Optional interactive report dependency; search and CSV/JSON export are stdlib-only.
+plotly>=6,<7
+# Exact profile-aggregated MILP reference (default `--reference milp`) and
+# circle_optimization.profile_milp; highspy pulls in numpy (>=2 for bitwise ops).
+highspy>=1.15,<2
+numpy>=2
