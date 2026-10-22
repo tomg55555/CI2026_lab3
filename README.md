@@ -62,6 +62,15 @@ Mean gap to the proven optimum; same instances, 0.2 s per run for every algorith
 
 At $N = 10{,}000$, $C = 8$ the classic versions cannot run (they would need a $10^8$-cell distance matrix); `hc-p-grasp` and `ga-e-seed` end within 0.2% of the optimum in one second, and the exact solver proves it in about 0.6 s.
 
+## Next steps: larger $C$
+
+All results so far are for modest $C$ ($5 \le C \le 8$), where $m \le 2^C \ll N$ and most children share a profile. The key ingredients rely on that: the exact solver's size grows with $m$, the splice move needs two children with the same profile, and the profile table only replaces the $N \times N$ matrix while $m \ll N$. As $C$ grows the picture changes. At $C = 10$ the exact solver already needs about 27 s ($m = 977$), and with $C = 20$, $N = 1000$ almost every profile is unique ($m \approx N$). With more time, the work would continue along four lines:
+
+1. **Map the regime.** Sweep $C$ (from 5 to 100) and $N$ with the existing suite (`--characteristic-counts`), recording the duplicate fraction $1 - m/N$, the exact solver's time and every version's gap, to locate where aggregation stops paying off. For large $C$ the distances concentrate around $C/2$, so every circle scores close to $N C / 2$; gaps should then also be reported relative to a random circle, not only to the optimum.
+2. **Revise the exact algorithm for $m \approx N$.** The problem then becomes a genuine maximum TSP, and a model with all $m(m-1)/2$ pair columns stops scaling.
+3. **Test HC and GA in that regime.** Re-run the versions to see which layers survive: S1 needs repeated profiles and becomes inactive, S2 brings no memory gain, and S4's edge table degenerates into the children's adjacency matrix, while S3 (reduced costs) and S6 (greedy seeds) should still apply as long as their LP and construction scale.
+4. **Improve where the findings point.**
+
 ## Run it
 
 ```sh
